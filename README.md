@@ -1,0 +1,2 @@
+# srenderlib
+for npm
