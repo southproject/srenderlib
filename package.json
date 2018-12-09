@@ -1,0 +1,27 @@
+{
+  "name": "srenderlib",
+  "version": "1.0.1",
+  "description": "little changes for zrender diy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/southproject/srenderlib.git"
+  },
+  "keywords": [
+    "canvaslib"
+  ],
+  "author": "yui",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/southproject/srenderlib/issues"
+  },
+  "homepage": "https://github.com/southproject/srenderlib#readme",
+  "devDependencies": {
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
+  }
+}
