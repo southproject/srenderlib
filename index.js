@@ -1,4 +1,4 @@
-var _zrender = require("./src/zrender");
+var _zrender = require("./src/srender");
 
 (function() {
 	for (var key in _zrender) {
