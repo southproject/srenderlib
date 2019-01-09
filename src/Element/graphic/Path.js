@@ -290,15 +290,15 @@ Path.prototype = {
     },
 
     // Overwrite attrKV
-    attrKV: function (key, value) {
+    attrKV: function (key, value, mode) {
         // FIXME
         if (key === 'shape') {
-            this.setShape(value);
+            this.setShape(value,mode);
             this.__dirtyPath = true;
             this._rect = null;
         }
         else {
-            Displayable.prototype.attrKV.call(this, key, value);
+            Displayable.prototype.attrKV.call(this, key, value, mode);
         }
     },
 
@@ -306,15 +306,29 @@ Path.prototype = {
      * @param {Object|string} key
      * @param {*} value
      */
-    setShape: function (key, value) {
+    setShape: function (key, value, mode) {
         var shape = this.shape;
+        
+        var attrs = {} //shape 对象
         // Path from string may not have shape
         if (shape) {
             if (zrUtil.isObject(key)) {
+                let mode = value;
                 for (var name in key) {
                     if (key.hasOwnProperty(name)) {
                         shape[name] = key[name];
+                        attrs[name] = key[name]
+                        if(name =='pointList'){
+                            attrs.points = attrs[name]
+                        }
                     }
+                    !mode&&this.pipe({type:"attr",
+                    tag:"shape",
+                    el:{
+                        id:this.id,
+                        shape:attrs
+                    }
+                })  //是否要为主动和被动的位移分别设置函数
                 }
             }
             else {

@@ -244,9 +244,9 @@ Displayable.prototype = {
         return this.animate('style', loop);
     },
 
-    attrKV: function (key, value) {
+    attrKV: function (key, value, mode) {
         if (key !== 'style') {
-            Element.prototype.attrKV.call(this, key, value);
+            Element.prototype.attrKV.call(this, key, value, mode);
         }
         else {
             this.style.set(value);

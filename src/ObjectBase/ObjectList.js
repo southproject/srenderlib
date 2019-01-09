@@ -7,7 +7,9 @@ import * as util from '../util/core/util'
  * @alias module:srender/ObjectList
  * @constructor
  */
-var ObjectList = function (storage) { 
+var ObjectList = function (storage,singleMode) { 
+
+    this.singleMode = singleMode || true;
 
     this.storage = storage;
 
@@ -33,7 +35,7 @@ ObjectList.prototype={
             this._objectList.push({id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation})
             this.storage.addRoot(el);
             //如果是协作模式，应该向服务器传递增加的信息
-            el.pipe({type:"add",el:{id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
+            !this.singleMode&&el.pipe({type:"add",el:{id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
         }
         else{
              console.log("键值对")
@@ -100,7 +102,7 @@ ObjectList.prototype={
         
     },
 
-    attr: function(el,tag) { //此处tag为style、rotation、position、scale四类，从属于属性改变attr这个父tag，attr与add，delete并列
+    attr: function(el,tag,mode) { //此处tag为style、rotation、position、scale四类，从属于属性改变attr这个父tag，attr与add，delete并列
         var array = this.storage._roots;
         var obj;
         for (var i = 0, len = array.length; i < len; i++) {  //方案2
@@ -114,6 +116,10 @@ ObjectList.prototype={
             switch (tag){
                 case 'position':  
                     obj.attr('position',el.position);
+                    break;
+                case 'shape':
+                    console.log(el.shape)
+                    obj.attr('shape',el.shape,mode);
                     break;
                 case 'style':  
                     obj.attr('style',el.style);

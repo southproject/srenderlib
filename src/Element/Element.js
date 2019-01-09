@@ -125,7 +125,7 @@ Element.prototype = {
     /**
      * @protected
      */
-    attrKV: function (key, value) {
+    attrKV: function (key, value, mode) {
         if (key === 'position' || key === 'scale' || key === 'origin'||key === 'rotation') {//
             // Copy the array
             if (value) {
@@ -162,20 +162,21 @@ Element.prototype = {
      * @param {string|Object} key
      * @param {*} value
      */
-    attr: function (key, value) {
+    attr: function (key, value, isObserver) {
+        var mode = isObserver || false        //默认是发送者
         if (typeof key === 'string') {
-            this.attrKV(key, value);
+            this.attrKV(key, value ,mode);
         }
         else if (zrUtil.isObject(key)) {
             for (var name in key) {
                 if (key.hasOwnProperty(name)) {
-                    this.attrKV(name, key[name]);
+                   
+                    this.attrKV(name, key[name],mode);
                 }
             }
         }
-
         this.dirty(false);
-        console.log(key,value)
+        
         return this;
     },
 
