@@ -1,5 +1,5 @@
 /*!
-* SRender, a high performance 2d drawing library.
+* SRender, a 2d drawing library.
 */
 
 import guid from './util/core/guid';
@@ -33,17 +33,17 @@ var instances = {};    // SRender实例map索引
 export var version = '1.0.1';
 
 /**
- * Initializing a zrender instance
+ * Initializing a srender instance
  * @param {HTMLElement} dom
  * @param {Object} opts
  * @param {string} [opts.renderer='canvas'] 'canvas' or 'svg'
  * @param {number} [opts.devicePixelRatio]
  * @param {number|string} [opts.width] Can be 'auto' (the same as null/undefined)
  * @param {number|string} [opts.height] Can be 'auto' (the same as null/undefined)
- * @return {module:zrender/ZRender}
+ * @return {module:srender/SRender}
  */
-export function init(dom, opts, singleMode) {
-    var mode =  singleMode || true;
+export function init(dom, opts, collaMode) {
+    var mode =  collaMode || false;
     var sr = new SRender(guid(), dom, opts, mode);
     instances[sr.id] = sr;
     return sr;
@@ -171,9 +171,11 @@ var SRender = function (id, dom, opts, mode) {
      */
     this.id = id;
 
+    this.mode = mode;
+
     var self = this;
     var storage = new Storage();
-    var objectList = new ObjectList(storage,mode);
+    
 
 
     var rendererType = opts.renderer;
@@ -188,6 +190,8 @@ var SRender = function (id, dom, opts, mode) {
         rendererType = 'canvas';
     }
     var painter = new painterCtors[rendererType](dom, storage, opts, id);
+
+    var objectList = new ObjectList(storage,painter,mode);
 
     this.objectList = objectList //refactoring
     this.storage = storage;

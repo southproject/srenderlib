@@ -1,6 +1,6 @@
 /**
  * 正多边形
- * @module zrender/shape/Isogon
+ * @module srender/Element/shape/Isogon
  */
 
 import Path from '../Path';

@@ -25,7 +25,7 @@ function Displayable(opts) {
     for (var name in opts) {
         if (
             opts.hasOwnProperty(name) &&
-            name !== 'style'
+            name !== 'style' && name !== 'id'
         ) {
             this[name] = opts[name];
         }

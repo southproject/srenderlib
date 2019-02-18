@@ -1,6 +1,6 @@
 /**
  * 椭圆形状
- * @module zrender/graphic/shape/Ellipse
+ * @module srender/Element/graphic/shape/Ellipse
  */
 
 import Path from '../Path';

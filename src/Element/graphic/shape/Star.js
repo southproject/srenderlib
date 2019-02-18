@@ -1,6 +1,6 @@
 /**
  * n角星（n>3）
- * @module zrender/graphic/shape/Star
+ * @module srender/Element/graphic/shape/Star
  */
 
 import Path from '../Path';
