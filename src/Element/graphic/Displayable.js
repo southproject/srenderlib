@@ -11,9 +11,9 @@ import Element from '../Element';
 import RectText from './mixin/RectText';
 
 /**
- * @alias module:zrender/graphic/Displayable
- * @extends module:zrender/Element
- * @extends module:zrender/graphic/mixin/RectText
+ * @alias module:srender/graphic/Displayable
+ * @extends module:srender/Element
+ * @extends module:srender/graphic/mixin/RectText
  */
 function Displayable(opts) {
 

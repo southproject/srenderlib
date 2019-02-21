@@ -1,13 +1,15 @@
 import guid from '../util/core/guid';
 import * as Cst from '../util/export'; //constructor of shape
 import Element from '../Element/Element'
+import Group from '../Render/container/Group'
 import * as util from '../util/core/util'
+import Action from '../Element/Action'
 /**
  * 接受外部对队列的直接改变 (M)
  * @alias module:srender/ObjectList
  * @constructor
  */
-var ObjectList = function (storage,painter,collaMode) { 
+var ObjectList = function (storage,painter,stack,collaMode) { 
 
     this.collaMode = collaMode ||false;
 
@@ -15,9 +17,13 @@ var ObjectList = function (storage,painter,collaMode) {
 
     this.painter = painter;
 
+    this.stack = stack;
+
     this._objectListLen = 0;
 
     this._objectList=[];
+
+   
 };
 
 ObjectList.prototype={
@@ -32,10 +38,15 @@ ObjectList.prototype={
     },
 
     add: function(el) {
-        if(el instanceof Element){
+        if(el instanceof Element || el instanceof Group){
            
             this._objectList.push({id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation})
+
             this.storage.addRoot(el);
+
+            let action = new Action("add",el)
+            
+            this.stack.add(action)
             //如果是协作模式，应该向服务器传递增加的信息
             this.collaMode&&el.pipe({type:"add",el:{id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
         }
@@ -57,6 +68,7 @@ ObjectList.prototype={
          //   origin:data.origin
             })
             this._objectList.push(el)
+
             this.storage.addRoot(obj);
      //   }
         }
@@ -86,13 +98,16 @@ ObjectList.prototype={
             }
             return;
         }
-        if (el instanceof Element){
+        if (el instanceof Element || el instanceof Group){
             var idx = util.indexOf(this._objectList, el.id);
             this._objectList.splice(idx, 1);
             //如果是协作模式，应该向服务器传递增加的信息
             this.collaMode&&el.pipe({type:"delete",el:{id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
             this.storage.delRoot(el)
             
+            let action = new Action("del",el)
+            
+            this.stack.add(action)
         }
         else{
             var idx = util.indexOf(this._objectList, el);//键值对的删除需要注意下是否正确，待调试

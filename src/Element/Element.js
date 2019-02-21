@@ -224,7 +224,10 @@ Element.prototype = {
      * @param {module:zrender/ZRender} zr
      */
     addSelfToZr: function (zr) {
+
         this.__zr = zr;
+
+        
         // 添加动画
         var animators = this.animators;
         if (animators) {
@@ -236,6 +239,7 @@ Element.prototype = {
         if (this.clipPath) {
             this.clipPath.addSelfToZr(zr);
         }
+       
     },
 
     /**

@@ -1,9 +1,9 @@
 /**
  * Group是一个容器，可以插入子节点，Group的变换也会被应用到子节点上
- * @module zrender/graphic/Group
+ * @module srender/graphic/Group
  * @example
- *     var Group = require('zrender/container/Group');
- *     var Circle = require('zrender/graphic/shape/Circle');
+ *     var Group = require('srender/container/Group');
+ *     var Circle = require('srender/graphic/shape/Circle');
  *     var g = new Group();
  *     g.position[0] = 100;
  *     g.position[1] = 100;
@@ -15,6 +15,7 @@
  *         }
  *     }));
  *     zr.add(g);
+ * Group及其子元素都会获得一个id
  */
 
 import * as zrUtil from '../../util/core/util';
@@ -22,10 +23,10 @@ import Element from '../../Element/Element';
 import BoundingRect from '../../util/core/BoundingRect';
 
 /**
- * @alias module:zrender/graphic/Group
+ * @alias module:srender/graphic/Group
  * @constructor
- * @extends module:zrender/mixin/Transformable
- * @extends module:zrender/mixin/Eventful
+ * @extends module:srender/mixin/Transformable
+ * @extends module:srender/mixin/Eventful
  */
 var Group = function (opts) {
 
@@ -59,14 +60,14 @@ Group.prototype = {
 
     /**
      * 所有子孙元素是否响应鼠标事件
-     * @name module:/zrender/container/Group#silent
+     * @name module:/srender/container/Group#silent
      * @type {boolean}
      * @default false
      */
     silent: false,
 
     /**
-     * @return {Array.<module:zrender/Element>}
+     * @return {Array.<module:srender/Element>}
      */
     children: function () {
         return this._children.slice();
@@ -75,7 +76,7 @@ Group.prototype = {
     /**
      * 获取指定 index 的儿子节点
      * @param  {number} idx
-     * @return {module:zrender/Element}
+     * @return {module:srender/Element}
      */
     childAt: function (idx) {
         return this._children[idx];
@@ -84,7 +85,7 @@ Group.prototype = {
     /**
      * 获取指定名字的儿子节点
      * @param  {string} name
-     * @return {module:zrender/Element}
+     * @return {module:srender/Element}
      */
     childOfName: function (name) {
         var children = this._children;
@@ -104,7 +105,7 @@ Group.prototype = {
 
     /**
      * 添加子节点到最后
-     * @param {module:zrender/Element} child
+     * @param {module:srender/Element} child
      */
     add: function (child) {
         if (child && child !== this && child.parent !== this) {
@@ -119,8 +120,8 @@ Group.prototype = {
 
     /**
      * 添加子节点在 nextSibling 之前
-     * @param {module:zrender/Element} child
-     * @param {module:zrender/Element} nextSibling
+     * @param {module:srender/Element} child
+     * @param {module:srender/Element} nextSibling
      */
     addBefore: function (child, nextSibling) {
         if (child && child !== this && child.parent !== this
@@ -161,7 +162,7 @@ Group.prototype = {
 
     /**
      * 移除子节点
-     * @param {module:zrender/Element} child
+     * @param {module:srender/Element} child
      */
     remove: function (child) {
         var zr = this.__zr;
@@ -271,7 +272,7 @@ Group.prototype = {
     },
 
     /**
-     * @return {module:zrender/core/BoundingRect}
+     * @return {module:srender/core/BoundingRect}
      */
     getBoundingRect: function (includeChildren) {
         // TODO Caching

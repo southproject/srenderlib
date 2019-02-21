@@ -11,6 +11,7 @@ import ObjectList from './ObjectBase/ObjectList';
 import Painter from './Render/Painter';
 import Animation from './Render/animation/Animation';
 import HandlerProxy from './Handler/dom/HandlerProxy';
+import Stack from "./ObjectBase/Stack"
 
 //import * as zrUtil from './core/util';
 import * as matrix from './util/core/matrix';
@@ -174,9 +175,10 @@ var SRender = function (id, dom, opts, mode) {
     this.mode = mode;
 
     var self = this;
+
     var storage = new Storage();
     
-
+    var stack = new Stack(storage);
 
     var rendererType = opts.renderer;
     // TODO WebGL
@@ -191,11 +193,15 @@ var SRender = function (id, dom, opts, mode) {
     }
     var painter = new painterCtors[rendererType](dom, storage, opts, id);
 
-    var objectList = new ObjectList(storage,painter,mode);
+    var objectList = new ObjectList(storage,painter,stack,mode);
 
     this.objectList = objectList //refactoring
+
     this.storage = storage;
+
     this.painter = painter;
+
+    this.stack = stack;
 
     var handerProxy = (!env.node && !env.worker) ? new HandlerProxy(painter.getViewportRoot()) : null;
     this.handler = new Handler(storage, painter, handerProxy, painter.root);
@@ -228,9 +234,12 @@ var SRender = function (id, dom, opts, mode) {
     };
 
     storage.addToStorage = function (el) {
+
+        el && el.addSelfToZr(self);
+
         oldAddToStorage.call(storage, el);
 
-        el.addSelfToZr(self);
+      // el && el.addSelfToZr(self);
     };
 };
 
@@ -287,6 +296,21 @@ SRender.prototype = {
     attr: function(el,tag,isObserver){
         let mode = isObserver || false;
         this.objectList.attr(el,tag,mode);
+    },
+
+    /**
+     * 撤销功能
+     */
+    undo: function(){
+        this.stack.undo();
+    //    this._needsRefresh = true;
+    },
+    /**
+     * 回溯
+     */
+    redo: function(){
+        this.stack.redo();
+    //    this._needsRefresh = true;
     },
 
     /**
@@ -439,6 +463,13 @@ SRender.prototype = {
      */
     clearAnimation: function () {
         this.animation.clear();
+    },
+
+    /**
+     * Get choosen object(s)
+     */
+    getNowShape: function() {
+        return this.handler._select.parent||this.handler._select;
     },
 
     /**

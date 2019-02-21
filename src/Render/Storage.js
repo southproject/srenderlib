@@ -55,8 +55,8 @@ Storage.prototype = {
      * @param {boolean} [update=false] 是否在返回前更新该数组
      * @param {boolean} [includeIgnore=false] 是否包含 ignore 的数组, 在 update 为 true 的时候有效
      *
-     * 详见{@link module:zrender/graphic/Displayable.prototype.updateDisplayList}
-     * @return {Array.<module:zrender/graphic/Displayable>}
+     * 详见{@link module:srender/graphic/Displayable.prototype.updateDisplayList}
+     * @return {Array.<module:srender/graphic/Displayable>}
      */
     getDisplayList: function (update, includeIgnore) {
         includeIgnore = includeIgnore || false;
@@ -159,10 +159,11 @@ Storage.prototype = {
      * @param {module:zrender/Element} el
      */
     addRoot: function (el,others = false) { //是否来自外部改变
+        
         if (el.__storage === this) {
             return;
         }
-
+        
         if (el instanceof Group) {
             el.addChildrenToStorage(this);
         }
@@ -217,6 +218,7 @@ Storage.prototype = {
     addToStorage: function (el) {
         if (el) {
             el.__storage = this;
+
             el.dirty(false);
         }
         return this;
@@ -225,6 +227,7 @@ Storage.prototype = {
     delFromStorage: function (el) {
         if (el) {
             el.__storage = null;
+            el.dirty(false);
         }
 
         return this;

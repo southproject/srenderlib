@@ -1,6 +1,7 @@
 import * as util from '../util/core/util';
 import * as vec2 from '../util/core/vector';
 import Draggable from '../Element/mixin/Draggable';
+import Click from '../Element/mixin/Click';
 import Eventful from '../Element/mixin/Eventful';
 import * as eventTool from '../util/core/event';
 
@@ -71,7 +72,7 @@ var Handler = function(storage, painter, proxy, painterRoot) {
      */
     this._hovered = {};
 
-    this._select = {};
+    this._select = null;
 
     /**
      * @private
@@ -93,6 +94,8 @@ var Handler = function(storage, painter, proxy, painterRoot) {
 
 
     Draggable.call(this);
+
+    Click.call(this);
 
     this.setHandlerProxy(proxy);
 };
@@ -358,5 +361,6 @@ function isHover(displayable, x, y) {
 
 util.mixin(Handler, Eventful);
 util.mixin(Handler, Draggable);
+util.mixin(Handler, Click);
 
 export default Handler;
