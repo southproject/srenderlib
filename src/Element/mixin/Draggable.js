@@ -1,5 +1,7 @@
 // TODO Draggable for group
 // FIXME Draggable on element which has parent rotation or scale
+import Action from '../Action'
+
 function Draggable() {
 
     this.on('mousedown', this._dragStart, this);
@@ -11,6 +13,8 @@ function Draggable() {
 
     // this._x = 0;
     // this._y = 0;
+   // this._preX = 0;
+   // this._preY = 0;
 }
 
 Draggable.prototype = {
@@ -18,17 +22,17 @@ Draggable.prototype = {
     constructor: Draggable,
 
     _dragStart: function (e) {
-        console.log("this?:"+this._needsManuallyCompositing)
+        
         var draggingTarget = e.target;
-
+    //    console.log("drag"+e.target)
      //   if (draggingTarget && draggingTarget.draggable) {
         if (draggingTarget) {
           //  draggingTarget.attr({style:{stroke:'#bbb'}})
             this._draggingTarget = draggingTarget;
             draggingTarget.dragging = true;
-            this._x = e.offsetX;
-            this._y = e.offsetY;
-
+        //    console.log("startPosition:",[e.offsetX,e.offsetY])
+            this._preX = this._x = e.offsetX;
+            this._preY = this._y = e.offsetY;
             this.dispatchToElement(param(draggingTarget, e), 'dragstart', e.event);//为元素拖动过程中定义拖拽事件提供触发点
         }
     },
@@ -66,8 +70,11 @@ Draggable.prototype = {
 
     _dragEnd: function (e) {
         var draggingTarget = this._draggingTarget;
+        
+        if (draggingTarget) {   
 
-        if (draggingTarget) {
+            draggingTarget.__zr.objectList.stack.add(new Action("transform",draggingTarget,draggingTarget._preTransform))
+            draggingTarget.saveTransform = true; //mouseup意味能够记录新的坐标
             draggingTarget.dragging = false;
         }
 
@@ -76,7 +83,8 @@ Draggable.prototype = {
         if (this._dropTarget) {
             this.dispatchToElement(param(this._dropTarget, e), 'drop', e.event);
         }
-
+       // console.log(e.target.type)
+      // typeof draggingTarget!=="undefined"?draggingTarget._zr.objectList.stack.add(new Action("transform",this,[this._preX,this._preY])):null   //操作入栈
         this._draggingTarget = null;
         this._dropTarget = null;
     }

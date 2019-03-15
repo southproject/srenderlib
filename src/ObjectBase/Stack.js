@@ -15,23 +15,27 @@ Stack.prototype = {
 
     constructor: Stack,
 
-    exec:function(target){
+    exec:function(action){
 
-        switch(target.type){
+        switch(action.type){
             
             case 'add':
             
               
-               this.storage.delRoot(target.object)
+               this.storage.delRoot(action.object)
                break;
                         
             case 'del':
 
               
-               this.storage.addRoot(target.object)
+               this.storage.addRoot(action.object)
                break;
             
             case 'transform':
+                console.log(action.act)
+                action.object.attr("position",[action.act[4],action.act[5]])
+                action.act = [...action.object.transform];//记录回溯前的坐标，以待redo使用
+              break;
 
             case 'style':
             
@@ -39,65 +43,71 @@ Stack.prototype = {
 
     },
 
-    redo:function(){
+    redo:function(triggered = false){
        
 
-        let target = this._redoList.pop();
+        let action = this._redoList.pop();
 
-        if(target){
-
-            this.exec(target)
+        if(action){
             
-            switch(target.type){
+
+            this.exec(action)
+            
+            switch(action.type){
                 case "add":
-                   // target.type = "del";
-                   target.setType("del")
+                   // action.type = "del";
+                   action.setType("del")
                     break;
                 case "del":
-                    //target.type = "add";
-                    target.setType("add")
+                    //action.type = "add";
+                    action.setType("add")
                     break;
+               
                         
             }
             
-            this._undoList.push(target);
+            this._undoList.push(action);
+
+            !triggered && action.object.pipe({type:"stack",tag:"redo"})
 
         }
 
     },
 
-    undo:function(){
+    undo:function(triggered = false){
 
-        let target = this._undoList.pop();
+        let action = this._undoList.pop();
 
-        if(target){
-            this.exec(target)
+        if(action){
+        
+
+            this.exec(action)
             
-            switch(target.type){
+            switch(action.type){
                 case "add":
                   
-                  target.setType("del")
+                  action.setType("del")
                     break;
                 case "del":
-                 target.setType("add")
+                    action.setType("add")
                     break;
+            
             }
             
-            this._redoList.push(target);
+            this._redoList.push(action);
+
+            !triggered && action.object.pipe({type:"stack",tag:"undo"})
             
         } 
     },
 
-    add:function(el){
+    add:function(action,triggered = false){
 
-        this._undoList.push(el)
+        this._undoList.push(action)
 
-        console.log(this._undoList)
-    },
+        this._redoList = [] //意味着如果有操作，则无法向后
 
-    del:function(el){
-
-        
+        !triggered && action.object.pipe({type:"stack",tag:"interrupt"})
 
     },
 

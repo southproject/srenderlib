@@ -118,6 +118,10 @@ Group.prototype = {
         return this;
     },
 
+    pipe: function (msg){
+        this.__zr && this.__zr.pipe(msg);
+    },
+
     /**
      * 添加子节点在 nextSibling 之前
      * @param {module:srender/Element} child

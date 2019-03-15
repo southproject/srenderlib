@@ -74,6 +74,7 @@ var Handler = function(storage, painter, proxy, painterRoot) {
 
     this._select = null;
 
+    this._preSelect = null;
     /**
      * @private
      * @type {Date}
@@ -244,7 +245,7 @@ Handler.prototype = {
         }
 
         if (!eventPacket.cancelBubble) {
-            // 冒泡到顶级 zrender 对象
+            // 冒泡到顶级 srender 对象
             this.trigger(eventName, eventPacket);  //handler实例，这时候自然在Handler的_$handlers中查找事件，即通过Handler.on(注册的)
             // 分发事件到用户自定义层
             // 用户有可能在全局 click 事件中 dispose，所以需要判断下 painter 是否存在

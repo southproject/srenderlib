@@ -1,9 +1,9 @@
-var _zrender = require("./src/srender");
+var _srender = require("./src/srender");
 
 (function() {
-	for (var key in _zrender) {
-		if (_zrender == null || !_zrender.hasOwnProperty(key) || key === 'default' || key === '__esModule') return;
-		exports[key] = _zrender[key];
+	for (var key in _srender) {
+		if (_srender == null || !_srender.hasOwnProperty(key) || key === 'default' || key === '__esModule') return;
+		exports[key] = _srender[key];
 	}
 })();
 /*

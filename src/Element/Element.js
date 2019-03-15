@@ -22,6 +22,7 @@ var Element = function (opts) { // jshint ignore:line
      * @type {string}
      */
     this.id = guid()//||opts.id;  // 反过来
+    this._preTransform = [];
 };
 
 Element.prototype = {
@@ -77,6 +78,8 @@ Element.prototype = {
      * @param  {number} dx dx on the global space
      * @param  {number} dy dy on the global space
      */
+    saveTransform:true,
+
     drift: function (dx, dy) {
         switch (this.draggable) {
             case 'horizontal':
@@ -93,6 +96,14 @@ Element.prototype = {
         }
         m[4] += dx;
         m[5] += dy;
+      //  console.log("drift:",[ m[4], m[5]])
+        if(this.saveTransform){
+        //初次drift时候，其他地方无法拿到不存在的transform，所以这个坐标和真实开始的位置有细小的差异。
+            this._preTransform = [...this.transform]
+            this.saveTransform = false;
+            console.log(this._preTransform)
+        }
+            
         this.pipe({type:"attr",
             tag:"position",
             el:{id:this.id,position:[ m[4],m[5]]}
@@ -227,7 +238,6 @@ Element.prototype = {
 
         this.__zr = zr;
 
-        
         // 添加动画
         var animators = this.animators;
         if (animators) {

@@ -38,15 +38,17 @@ ObjectList.prototype={
     },
 
     add: function(el) {
+
+        let El = null;
+
         if(el instanceof Element || el instanceof Group){
-           
+            
+            El = el;
+
             this._objectList.push({id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation})
 
-            this.storage.addRoot(el);
+            this.storage.addRoot(el);//stack操作
 
-            let action = new Action("add",el)
-            
-            this.stack.add(action)
             //如果是协作模式，应该向服务器传递增加的信息
             this.collaMode&&el.pipe({type:"add",el:{id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
         }
@@ -56,7 +58,9 @@ ObjectList.prototype={
            //  if(el.id>=guid('save')){
              //el为7个键值对 {id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}
             let type = el.type.charAt(0).toUpperCase()+el.type.slice(1) 
-            
+
+            this._objectList.push(el)
+
             let obj = new Cst[type]({
                 id:el.id,
                 style:el.style,
@@ -67,16 +71,21 @@ ObjectList.prototype={
                rotation:el.rotation,
          //   origin:data.origin
             })
-            this._objectList.push(el)
+
+            El = obj;
 
             this.storage.addRoot(obj);
      //   }
         }
+        let action = new Action("add",El)
+        this.stack.add(action)
         
-    
     },
 
     del: function(el) {
+
+        let El = null;
+
         if (el == null) {
             // 不指定el清空 删除前应该添加占用判断 Group待完成
            /* for (var i = 0; i < this._objectList.length; i++) {
@@ -99,23 +108,32 @@ ObjectList.prototype={
             return;
         }
         if (el instanceof Element || el instanceof Group){
+
+            El = el;
+
             var idx = util.indexOf(this._objectList, el.id);
             this._objectList.splice(idx, 1);
             //如果是协作模式，应该向服务器传递增加的信息
             this.collaMode&&el.pipe({type:"delete",el:{id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
             this.storage.delRoot(el)
-            
-            let action = new Action("del",el)
-            
-            this.stack.add(action)
+             
         }
         else{
+
             var idx = util.indexOf(this._objectList, el);//键值对的删除需要注意下是否正确，待调试
             if (idx >= 0) {
                 this.storage._roots.splice(idx, 1);     //如果objectList和displayList顺序保持完全一致
                 this._objectList.splice(idx, 1);
             }
+            //由于增加了撤销，以下过程是必须的，需要注意撤销功能究竟需不需要id也回溯
+            let type = el.type.charAt(0).toUpperCase()+el.type.slice(1) 
+            let obj = new Cst[type]({id:el.id,style:el.style,position:el.position,shape:el.shape,scale:el.scale,rotation:el.rotation,})
+            El = obj;
         }
+
+        let action = new Action("add",El)
+        
+        this.stack.add(action)
         
     },
 
@@ -148,6 +166,9 @@ ObjectList.prototype={
                     obj.attr('scale',el.scale);
                     break;  
             }
+         //   let action = new Action("style",obj,)
+            
+         //   this.stack.add(action)
         }
         /*
         obj.attr({                                //此处协同编辑时改为分情况调用较好，传过来的值包含操作类型tag
@@ -165,8 +186,12 @@ ObjectList.prototype={
           //  this.add(array)
             guid('recover')
             if(array){
-                array.forEach(function(el){this.add(el)},this);
+                if(array instanceof Array){
+                    array.forEach(function(el){this.add(el)},this);
+                }
+                else this.add(array);
             }
+               
             else{
                 this.painter.clear()
             }

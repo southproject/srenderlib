@@ -297,7 +297,11 @@ SRender.prototype = {
         let mode = isObserver || false;
         this.objectList.attr(el,tag,mode);
     },
-
+    changeColor: function(el,color){
+        console.log(el)
+        el.attr("style",{fill:color})
+        // this._needsRefresh = true;
+    },
     /**
      * 撤销功能
      */
@@ -469,7 +473,8 @@ SRender.prototype = {
      * Get choosen object(s)
      */
     getNowShape: function() {
-        return this.handler._select.parent||this.handler._select;
+        return this.handler._select;
+        //this.handler._select.parent||
     },
 
     /**
