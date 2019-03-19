@@ -1,3 +1,4 @@
+import * as util from '../util/core/util'
 
 var Stack = function(storage){
 
@@ -32,13 +33,21 @@ Stack.prototype = {
                break;
             
             case 'transform':
-                console.log(action.act)
+             //   console.log(action.act)
                 action.object.attr("position",[action.act[4],action.act[5]])
                 action.act = [...action.object.transform];//记录回溯前的坐标，以待redo使用
               break;
 
             case 'style':
-            
+             
+              var temp = {}
+              util.extend(temp,action.act)
+              util.extend(action.act,action.object.style);  
+              action.object.attr("style",temp)
+             
+           
+              
+              break;
         }
 
     },

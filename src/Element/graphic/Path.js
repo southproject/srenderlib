@@ -227,12 +227,13 @@ Path.prototype = {
     },
 
     contain: function (x, y) {
+       
         var localPos = this.transformCoordToLocal(x, y);
         var rect = this.getBoundingRect();
         var style = this.style;
         x = localPos[0];
         y = localPos[1];
-
+        
         if (rect.contain(x, y)) {
             var pathData = this.path.data;
             if (style.hasStroke()) {

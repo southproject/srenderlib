@@ -36,6 +36,8 @@ function Displayable(opts) {
      */
     this.style = new Style(opts.style, this);
 
+    
+
     this._rect = null;
     // Shapes for cascade clipping.
     this.__clipPaths = [];
@@ -198,6 +200,8 @@ Displayable.prototype = {
     rectContain: function (x, y) {
         var coord = this.transformCoordToLocal(x, y);
         var rect = this.getBoundingRect();
+     //   console.log(x,y)
+     //   console.log(rect)
         return rect.contain(coord[0], coord[1]);
     },
 

@@ -47,7 +47,15 @@ export function $override(name, fn) {
 
     methods[name] = fn;
 }
-
+export function deepClone(source){
+    var target = {}
+    for (var key in source) {
+        if (source.hasOwnProperty(key)) {
+            target[key] = source[key];
+        }
+    }
+    return target;
+}
 /**
  * Those data types can be cloned:
  *     Plain object, Array, TypedArray, number, string, null, undefined.
@@ -165,7 +173,7 @@ export function mergeAll(targetAndSources, overwrite) {
 /**
  * @param {*} target
  * @param {*} source
- * @memberOf module:zrender/core/util
+ * @memberOf module:srender/core/util
  */
 export function extend(target, source) {
     for (var key in source) {
@@ -174,6 +182,16 @@ export function extend(target, source) {
         }
     }
     return target;
+}
+export function extend1(oldStyle, ParaStyle) { //style中有相应地部分，那就将原型链或者本身的部分提取出来保存
+    
+    for (var key in ParaStyle) {
+        if (ParaStyle.hasOwnProperty(key)) {
+            if(!oldStyle.hasOwnProperty(key))
+                 oldStyle[key] = oldStyle.__proto__[key];
+        }
+    }
+    return oldStyle;
 }
 
 /**

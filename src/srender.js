@@ -297,11 +297,19 @@ SRender.prototype = {
         let mode = isObserver || false;
         this.objectList.attr(el,tag,mode);
     },
-    changeColor: function(el,color){
-        console.log(el)
-        el.attr("style",{fill:color})
+
+    changeFillColor: function(el,color){
+
+        this.objectList.attr(el,"style",this.mode,{fill:color})
+      //  el.attr("style",{fill:color})
         // this._needsRefresh = true;
     },
+    changeStrokeColor: function(el,color){
+      //  el.attr("style",{stroke:color})
+        // this._needsRefresh = true;
+        this.objectList.attr(el,"style",this.mode,{stroke:color})
+    },
+
     /**
      * 撤销功能
      */

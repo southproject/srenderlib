@@ -51,7 +51,6 @@ Text.prototype = {
 
     getBoundingRect: function () {
         var style = this.style;
-
         // Optimize, avoid normalize every time.
         this.__dirty && textHelper.normalizeTextStyle(style, true);
 
@@ -70,6 +69,8 @@ Text.prototype = {
 
             rect.x += style.x || 0;
             rect.y += style.y || 0;
+            //  rect.x += style._x || 0; //此处的_x是反映transform变化的真实坐标
+            //  rect.y += style._y || 0;
 
             if (textHelper.getStroke(style.textStroke, style.textStrokeWidth)) {
                 var w = style.textStrokeWidth;

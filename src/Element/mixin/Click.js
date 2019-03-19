@@ -16,10 +16,10 @@ Click.prototype = {
 
         var clickingTarget = e.target;
 
-        console.log("Click:"+clickingTarget)
+      //  console.log("Click:"+clickingTarget.type)
 
         if(clickingTarget){
-            console.log("进入流程")
+            console.log("进入流程:",clickingTarget.type)
             if(this._preSelect){
               
                 //_down(this._preSelect)
