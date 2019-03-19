@@ -37,7 +37,7 @@ ObjectList.prototype={
         }
     },
 
-    add: function(el,needStack) {
+    add: function(el,needStack = true) {
 
         let El = null;
 
@@ -187,9 +187,9 @@ ObjectList.prototype={
             guid('recover')
             if(array){
                 if(array instanceof Array){
-                    array.forEach(function(el){this.add(el,false)},this);
+                    array.forEach(function(el){this.add(el)},this);
                 }
-                else this.add(array,false);//这个false参数取决于  react更新时是否每次都重新录入数组但stack仍保留
+                else this.add(array);//这个false参数取决于  react更新时是否每次都重新录入数组但stack仍保留
             }
                
             else{
