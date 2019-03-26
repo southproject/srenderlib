@@ -293,9 +293,9 @@ SRender.prototype = {
     /**
      * 改变属性，仅限服务端数据改变
      */
-    attr: function(el,tag,isObserver){
+    attr: function(el,tag,isObserver,style,forUser){
         let mode = isObserver || false;
-        this.objectList.attr(el,tag,mode);
+        this.objectList.attr(el,tag,mode,style,forUser);
     },
 
     changeFillColor: function(el,color){

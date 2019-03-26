@@ -248,12 +248,13 @@ Displayable.prototype = {
         return this.animate('style', loop);
     },
 
-    attrKV: function (key, value, mode) {
+    attrKV: function (key, value, mode=false) {
         if (key !== 'style') {
             Element.prototype.attrKV.call(this, key, value, mode);
         }
         else {
             this.style.set(value);
+            mode&&this.pipe({type:"attr",tag:"style",el:{id:this.id,style:value}})
         }
     },
 
