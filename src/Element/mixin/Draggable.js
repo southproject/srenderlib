@@ -25,8 +25,8 @@ Draggable.prototype = {
         
         var draggingTarget = e.target;
     //    console.log("drag"+e.target)
-        if (draggingTarget && draggingTarget.draggable) {
-    //    if (draggingTarget) {
+      //  if (draggingTarget && draggingTarget.draggable) {
+        if (draggingTarget) {
           //  draggingTarget.attr({style:{stroke:'#bbb'}})
             this._draggingTarget = draggingTarget;
             draggingTarget.dragging = true;
