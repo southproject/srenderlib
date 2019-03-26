@@ -43,9 +43,9 @@ export var version = '1.0.1';
  * @param {number|string} [opts.height] Can be 'auto' (the same as null/undefined)
  * @return {module:srender/SRender}
  */
-export function init(dom, opts, collaMode) {
+export function init(dom, opts, collaMode,user) {
     var mode =  collaMode || false;
-    var sr = new SRender(guid(), dom, opts, mode);
+    var sr = new SRender(guid(), dom, opts, mode,user);
     instances[sr.id] = sr;
     return sr;
 }
