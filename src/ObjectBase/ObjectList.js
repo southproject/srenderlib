@@ -10,7 +10,7 @@ import Style from '../Element/graphic/Style';
  * @alias module:srender/ObjectList
  * @constructor
  */
-var ObjectList = function (storage,painter,stack,collaMode) { 
+var ObjectList = function (storage,painter,stack,collaMode,user) { 
 
     this.collaMode = collaMode ||false;
 
@@ -23,6 +23,10 @@ var ObjectList = function (storage,painter,stack,collaMode) {
     this._objectListLen = 0;
 
     this._objectList=[];
+
+    this._boundingRect = null;
+
+    this.user = user||"bing";
 
    
 };
@@ -38,6 +42,28 @@ ObjectList.prototype={
         }
     },
 
+    addBoundingRect: function(Rect){
+        this._boundingRect = new Cst.Rect({
+            shape: {
+                cx: 0,
+                cy: 0,
+                x: Rect.x,
+                y: Rect.y,
+                width: Rect.width,
+                height:Rect.height
+            },
+            style: {
+                fill: 'none',
+                stroke: '#14f1ff'
+            }
+            });
+        this.add(this._boundingRect,false)
+    },
+
+    removeBoundingRect: function(){
+        this._boundingRect&&this.del(this._boundingRect,false)
+    },
+
     add: function(el,needStack = true) {
 
         let El = null;
@@ -47,7 +73,9 @@ ObjectList.prototype={
             El = el;
 
             this._objectList.push({id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation})
-
+            if(el.type === "image"){
+               //缓冲处理？
+            }
             this.storage.addRoot(el);//stack操作
 
             //如果是协作模式，应该向服务器传递增加的信息
@@ -83,7 +111,7 @@ ObjectList.prototype={
         
     },
 
-    del: function(el) {
+    del: function(el,needStack = true) {
 
         let El = null;
 
@@ -134,7 +162,7 @@ ObjectList.prototype={
 
         let action = new Action("add",El)
         
-        this.stack.add(action)
+        needStack&&this.stack.add(action)
         
     },
 
@@ -147,8 +175,8 @@ ObjectList.prototype={
                 break
             }
         }
-        if(!obj){console.log("id不正确")}
-        else{
+        if(!obj){console.log("id不正确:",el.id,array)}//这里稍微有点问题，_roots中代表group的有自己的id，解决办法一是靠传递键值对时传递父元素信息
+        else{                                          //另一种是靠displayList判断
             switch (tag){
                 case 'position':  
                     obj.attr('position',el.position);

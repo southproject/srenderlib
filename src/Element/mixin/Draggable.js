@@ -25,16 +25,36 @@ Draggable.prototype = {
         
         var draggingTarget = e.target;
     //    console.log("drag"+e.target)
-     //   if (draggingTarget && draggingTarget.draggable) {
-        if (draggingTarget) {
+        if (draggingTarget && draggingTarget.draggable) {
+    //    if (draggingTarget) {
           //  draggingTarget.attr({style:{stroke:'#bbb'}})
             this._draggingTarget = draggingTarget;
             draggingTarget.dragging = true;
         //    console.log("startPosition:",[e.offsetX,e.offsetY])
             this._preX = this._x = e.offsetX;
             this._preY = this._y = e.offsetY;
+            /**** */
+            if(!draggingTarget._occupied&&draggingTarget.type !== "text"){
+                draggingTarget._occupied = true;
+                var username = draggingTarget.__zr.objectList.user;
+                var rect = draggingTarget.getVisionBoundingRect&&draggingTarget.getVisionBoundingRect();
+                draggingTarget.__zr.objectList.attr( draggingTarget,"style",false,{  text:username,
+                    textPosition:[rect.width||100,0],
+                    textFill: '#0ff',
+                    fontSize: 30,
+                    fontFamily: 'Lato',
+                    fontWeight: 'bolder',})
+               /*  draggingTarget.attr("style",{  text:username,
+                textPosition:[rect.width||100,0],
+                textFill: '#0ff',
+                fontSize: 30,
+                fontFamily: 'Lato',
+                fontWeight: 'bolder',})   */
+            }//这个操作不入栈
+            /** */
             this.dispatchToElement(param(draggingTarget, e), 'dragstart', e.event);//为元素拖动过程中定义拖拽事件提供触发点
         }
+       
     },
 
     _drag: function (e) {
@@ -76,6 +96,12 @@ Draggable.prototype = {
             draggingTarget.__zr.objectList.stack.add(new Action("transform",draggingTarget,draggingTarget._preTransform))
             draggingTarget.saveTransform = true; //mouseup意味能够记录新的坐标
             draggingTarget.dragging = false;
+            if(draggingTarget.type !== 'text'){
+                draggingTarget._occupied = false;
+                var username = draggingTarget.__zr.objectList.user;
+              //  draggingTarget.attr("style",{text:null})
+              draggingTarget.__zr.objectList.attr( draggingTarget,"style",false,{text:null})
+            }
         }
 
         this.dispatchToElement(param(draggingTarget, e), 'dragend', e.event);

@@ -299,7 +299,7 @@ util.each(['click', 'mousedown', 'mouseup', 'mousewheel', 'dblclick', 'contextme
         // Find hover again to avoid click event is dispatched manually. Or click is triggered without mouseover
         var hovered = this.findHover(event.zrX, event.zrY);   //储存在proxy._$handlers中的this
         var hoveredTarget = hovered.target;
-        console.log(hovered)
+     //   console.log(hovered)
         if (name === 'mousedown') {
             this._downEl = hoveredTarget;
             this._downPoint = [event.zrX, event.zrY];

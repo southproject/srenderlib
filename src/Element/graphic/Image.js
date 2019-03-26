@@ -32,7 +32,7 @@ ZImage.prototype = {
             this,
             this.onload
         );
-
+       // image.setAttribute('crossOrigin', 'anonymous');
         if (!image || !imageHelper.isImageReady(image)) {
             return;
         }

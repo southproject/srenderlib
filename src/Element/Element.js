@@ -23,6 +23,8 @@ var Element = function (opts) { // jshint ignore:line
      */
     this.id = guid()//||opts.id;  // 反过来
     this._preTransform = [];
+    this._x = opts.shape&&opts.shape.x || null;
+    this._y = opts.shape&&opts.shape.y || null;
 };
 
 Element.prototype = {

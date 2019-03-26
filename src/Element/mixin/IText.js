@@ -1,7 +1,8 @@
 function IText(){ //Interactive Text
     
     this.on('dblclick',this.displayInput,this)
-
+  //  this.on('mousemove',this.occupy,this)
+  //  this.on('mouseup',this.free,this)
     this._hasItext = false;
         
 }
@@ -17,8 +18,11 @@ IText.prototype = {
         if(this._hasItext) return 
 
         var chooseTarget = e.target;
-        console.log("bounding:",chooseTarget.getBoundingRect())
+        // chooseTarget.getBoundingRect().applyTransform(chooseTarget.transform)
+         console.log("bounding:",chooseTarget&&chooseTarget.getVisionBoundingRect())
+      //  chooseTarget&&chooseTarget.getBoundingRect().applyTransform(chooseTarget.transform)
         console.log("事件坐标:",e.offsetX,e.offsetY)
+        /*
         if(chooseTarget&&chooseTarget.type === 'text'){
            
             console.log("dom:",chooseTarget.__zr.painter)
@@ -35,6 +39,33 @@ IText.prototype = {
             parent.appendChild(itext)
             this._hasItext = true;
 
+        }
+        */
+    },
+
+    occupy: function(e){
+        var draggingTarget = e.target;
+
+        if (draggingTarget) { 
+            if(!draggingTarget._occupied){
+                draggingTarget._occupied = true;
+                var username = draggingTarget.__zr.objectList.user;
+                draggingTarget.attr("style",{  text:username,
+                textPosition:[200,140],
+                textFill: '#0ff',
+                fontSize: 30,
+                fontFamily: 'Lato',
+                fontWeight: 'bolder',})  
+            }//这个操作不入栈
+          //  draggingTarget.__zr.objectList.addBoundingRect(draggingTarget.getVisionBoundingRect())
+        }
+    },
+    free: function(e){
+        var draggingTarget = e.target;
+        if (draggingTarget){
+            draggingTarget._occupied = false;
+            var username = draggingTarget.__zr.objectList.user;
+            draggingTarget.attr("style",{text:null})
         }
     }
 

@@ -19,7 +19,7 @@ Click.prototype = {
       //  console.log("Click:"+clickingTarget.type)
 
         if(clickingTarget){
-            console.log("进入流程:",clickingTarget.type)
+        //    console.log("进入流程:",clickingTarget.type)
             if(this._preSelect){
               
                 //_down(this._preSelect)
