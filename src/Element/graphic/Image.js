@@ -105,6 +105,19 @@ ZImage.prototype = {
             );
         }
         return this._rect;
+    },
+
+    getVisionBoundingRect: function () {
+        var style = this.style;
+        var tmpMat = [];
+        var transform = this.getLocalTransform(tmpMat);
+        if (! this.__rect) {
+            this.__rect = new BoundingRect(
+                style.x || 0, style.y || 0, style.width || 0, style.height || 0
+            );
+        }
+        this.__rect.applyTransform(transform);
+        return this.__rect;
     }
 };
 

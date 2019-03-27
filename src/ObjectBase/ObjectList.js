@@ -73,13 +73,16 @@ ObjectList.prototype={
             El = el;
 
             this._objectList.push({id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation})
-            if(el.type === "image"){
-               //缓冲处理？
-            }
+           
             this.storage.addRoot(el);//stack操作
 
             //如果是协作模式，应该向服务器传递增加的信息
+            if(el.type === "file"){
+                this.collaMode&&el.pipe({type:"add",el:{id:el.id,type:el.type,totalTime:"02:11:54",frameRate:{rate:29.97,height:1080,width:1440,},shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
+            }
+            else{
             this.collaMode&&el.pipe({type:"add",el:{id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
+            }
         }
         else{
              console.log("键值对")
@@ -89,7 +92,19 @@ ObjectList.prototype={
             let type = el.type.charAt(0).toUpperCase()+el.type.slice(1) 
 
             this._objectList.push(el)
-
+            if(type === "File"){
+                let obj = new Cst.House({
+                    id:el.id,
+                    style:el.style,
+                    position:el.position,
+                    shape:el.shape,
+                    
+                    scale:el.scale,
+                   rotation:el.rotation,
+             //   origin:data.origin
+                })
+            }
+            else{
             let obj = new Cst[type]({
                 id:el.id,
                 style:el.style,
@@ -100,7 +115,7 @@ ObjectList.prototype={
                rotation:el.rotation,
          //   origin:data.origin
             })
-
+        }
             El = obj;
 
             this.storage.addRoot(obj);

@@ -10,7 +10,7 @@ var sin = Math.sin;
 
 export default Path.extend({
 
-    type: 'house',
+    type: 'file',//'house',
 
     shape: {
         cx: 0,
