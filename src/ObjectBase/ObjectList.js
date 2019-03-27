@@ -90,10 +90,10 @@ ObjectList.prototype={
            //  if(el.id>=guid('save')){
              //el为7个键值对 {id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}
             let type = el.type.charAt(0).toUpperCase()+el.type.slice(1) 
-
+            var obj = null;
             this._objectList.push(el)
             if(type === "File"){
-                let obj = new Cst.House({
+                 obj = new Cst.House({
                     id:el.id,
                     style:el.style,
                     position:el.position,
@@ -105,7 +105,7 @@ ObjectList.prototype={
                 })
             }
             else{
-            let obj = new Cst[type]({
+             obj = new Cst[type]({
                 id:el.id,
                 style:el.style,
                 position:el.position,
