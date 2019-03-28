@@ -77,12 +77,11 @@ ObjectList.prototype={
             this.storage.addRoot(el);//stack操作
 
             //如果是协作模式，应该向服务器传递增加的信息
-            if(el.type === "file"){
-                this.collaMode&&el.pipe({type:"add",el:{id:el.id,type:el.type,totalTime:"02:11:54",frameRate:{rate:29.97,height:1080,width:1440,},shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
-            }
-            else{
+           
+             //   this.collaMode&&el.pipe({type:"add",el:{id:el.id,type:el.type,totalTime:"02:11:54",frameRate:{rate:29.97,height:1080,width:1440,},shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
+           
             this.collaMode&&el.pipe({type:"add",el:{id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}})
-            }
+          
         }
         else{
              console.log("键值对")
@@ -90,22 +89,10 @@ ObjectList.prototype={
            //  if(el.id>=guid('save')){
              //el为7个键值对 {id:el.id,type:el.type,shape:el.shape,style:el.style,position:el.position,scale:el.scale,rotation:el.rotation}
             let type = el.type.charAt(0).toUpperCase()+el.type.slice(1) 
-            var obj = null;
+
             this._objectList.push(el)
-            if(type === "File"){
-                 obj = new Cst.House({
-                    id:el.id,
-                    style:el.style,
-                    position:el.position,
-                    shape:el.shape,
-                    
-                    scale:el.scale,
-                   rotation:el.rotation,
-             //   origin:data.origin
-                })
-            }
-            else{
-             obj = new Cst[type]({
+           
+            var obj = new Cst[type]({
                 id:el.id,
                 style:el.style,
                 position:el.position,
@@ -115,7 +102,7 @@ ObjectList.prototype={
                rotation:el.rotation,
          //   origin:data.origin
             })
-        }
+      
             El = obj;
 
             this.storage.addRoot(obj);
