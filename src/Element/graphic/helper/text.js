@@ -34,11 +34,16 @@ export function normalizeTextStyle(style) {
     each(style.rich, normalizeStyle);
     return style;
 }
+export function normalizeTtextStyle(style) {
+    normalizeStyle(style,true);
+    each(style.rich, normalizeStyle);
+    return style;
+}
 
-function normalizeStyle(style) {
+function normalizeStyle(style,textOfText=false) {
     if (style) {
 
-        style.font = textContain.makeFont(style);
+        style.font = textOfText?textContain.makeFfont(style):textContain.makeFont(style);
 
         var textAlign = style.textAlign;
         textAlign === 'middle' && (textAlign = 'center');

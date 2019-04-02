@@ -158,7 +158,6 @@ Path.prototype = {
             // Remove lineDash
             ctx.setLineDash([]);
         }
-
         // Draw rect text
         if (style.text != null) {
             // Only restore transform when needs draw text.

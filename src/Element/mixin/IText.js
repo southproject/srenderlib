@@ -1,46 +1,57 @@
 function IText(){ //Interactive Text
     
     this.on('dblclick',this.displayInput,this)
-  //  this.on('mousemove',this.occupy,this)
-  //  this.on('mouseup',this.free,this)
-    this._hasItext = false;
-        
+    this.on('mousedown',this.delayWrap,this)//supposed 
+    this._Itexting = false;//means there is going a itext
+    this._itext = null;
+    this._itextId = null;
+    this.textTarget = null; //where choosed textNode  store
 }
 
 IText.prototype = {
-
     
-
     constructor: IText,
 
-    displayInput: function(e){  //定位可编辑文本框
+    updateText: function(e,target){
+        this.textTarget.attr("style",{text:this._itext.value},true);
+    },
+    displayInput: function(e){  //display textarea to get keyboard input
 
-        if(this._hasItext) return 
+        if(this._Itexting&&this.textTarget===e.target) return 
 
-        var chooseTarget = e.target;
-        // chooseTarget.getBoundingRect().applyTransform(chooseTarget.transform)
-         console.log("bounding:",chooseTarget&&chooseTarget.getVisionBoundingRect())
-      //  chooseTarget&&chooseTarget.getBoundingRect().applyTransform(chooseTarget.transform)
-        console.log("事件坐标:",e.offsetX,e.offsetY)
-        /*
-        if(chooseTarget&&chooseTarget.type === 'text'){
+        if(e.target&&e.target.type === 'text'){
+
+        var textTarget = this.textTarget = e.target;
            
-            console.log("dom:",chooseTarget.__zr.painter)
-            console.log("bounding:",chooseTarget.style.textRect)
-            console.log("坐标:",chooseTarget.style._x,chooseTarget.style._y)
-          //  var location = chooseTarget.getBoundingRect()
-            var parent = chooseTarget.__zr.painter.root
-            var defaultText=document.createTextNode("This is new.");
-            var itext=document.createElement("textarea");
-            itext.appendChild(defaultText);
-            itext.style.position = "absolute"
-            itext.style.left = chooseTarget.style._x + "px";
-            itext.style.top = chooseTarget.style._y + "px";
-            parent.appendChild(itext)
-            this._hasItext = true;
+         //   console.log("dom:",textTarget.__zr.painter)
+         console.log("bounding:",textTarget&&textTarget.getVisionBoundingRect())
+         
+       
+            var parent = textTarget.__zr.painter.root
+            var itext = this._itext;
+             if(itext) {//just addEventListener again
+                this._itext.value = textTarget.style.text
+                this._itext.focus();
+                this._itext.addEventListener("keyup",()=>this.updateText());
+             }
+             else{
+                this._itext=document.createElement("textarea");
+                this._itext.defaultValue = textTarget.style.text;
+                  this._itext.style.position = "absolute";
+                  this._itext.style.top = "-999px";
+                  this._itext.style.zIndex = -99;
+            
+                parent.appendChild(this._itext);
+          
+                this._itext.focus();
+                this._itext.addEventListener("keyup",()=>this.updateText())
+             }
+            
+           
+            this._Itexting = true;
 
         }
-        */
+        
     },
 
     occupy: function(e){
@@ -56,7 +67,7 @@ IText.prototype = {
                 fontSize: 30,
                 fontFamily: 'Lato',
                 fontWeight: 'bolder',})  
-            }//这个操作不入栈
+            }//don't need stack
           //  draggingTarget.__zr.objectList.addBoundingRect(draggingTarget.getVisionBoundingRect())
         }
     },
@@ -67,7 +78,22 @@ IText.prototype = {
             var username = draggingTarget.__zr.objectList.user;
             draggingTarget.attr("style",{text:null})
         }
+    },
+    delayWrap: function(e){
+      //  setTimeout(this.noFocus.bind(this,e),300)
+      setTimeout(()=>this.noFocus(e),300)
+    },
+    noFocus: function(e){
+        if(this._Itexting){
+            var downTarget = e.target;
+            if(downTarget!==this.textTarget){
+                this._itext.removeEventListener("keyup",()=>this.updateText())
+                this._Itexting = false;
+            }
+            else  this._itext.focus();
+        }
     }
+
 
 }
 

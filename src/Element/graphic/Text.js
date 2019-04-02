@@ -4,8 +4,8 @@ import * as textContain from '../../Render/contain/text';
 import * as textHelper from './helper/text';
 
 /**
- * @alias zrender/graphic/Text
- * @extends module:zrender/graphic/Displayable
+ * @alias srender/graphic/Text
+ * @extends module:srender/graphic/Displayable
  * @constructor
  * @param {Object} opts
  */
@@ -21,7 +21,6 @@ Text.prototype = {
 
     brush: function (ctx, prevEl) {
         var style = this.style;
-
         // Optimize, avoid normalize every time.
         this.__dirty && textHelper.normalizeTextStyle(style, true);
 
@@ -45,8 +44,15 @@ Text.prototype = {
         this.setTransform(ctx);
 
         textHelper.renderText(this, ctx, text, style, null, prevEl);
+       
+        if (style.textOfText&&style.textOfText!=="") {
+            this.restoreTransform(ctx);
+            this.drawRectTtext(ctx, this.getBoundingRect());
+        }
 
         this.restoreTransform(ctx);
+      
+        
     },
 
     getBoundingRect: function () {

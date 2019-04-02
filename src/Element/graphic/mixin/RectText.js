@@ -59,6 +59,47 @@ RectText.prototype = {
         textHelper.renderText(this, ctx, text, style, rect);
 
         ctx.restore();
+    },
+    drawRectTtext: function (ctx, rect) {//in case of recttext of text elememt
+        var style = this.style;
+
+        rect = style.textRect || rect;
+
+        // Optimize, avoid normalize every time.
+        this.__dirty && textHelper.normalizeTtextStyle(style, true);
+
+        var text = style.textOfText;
+       // console.log(text)
+        // Convert to string
+        text != null && (text += '');
+
+        if (!textHelper.needDrawText(text, style)) {
+            return;
+        }
+
+        // FIXME
+        // Do not provide prevEl to `textHelper.renderText` for ctx prop cache,
+        // but use `ctx.save()` and `ctx.restore()`. Because the cache for rect
+        // text propably break the cache for its host elements.
+        ctx.save();
+
+        // Transform rect to view space
+        var transform = this.transform;
+        if (!style.transformText) {
+            if (transform) {
+                tmpRect.copy(rect);
+                tmpRect.applyTransform(transform);
+                rect = tmpRect;
+            }
+        }
+        else {
+            this.setTransform(ctx);
+        }
+
+        // transformText and textRotation can not be used at the same time.
+        textHelper.renderText(this, ctx, text, style, rect);
+
+        ctx.restore();
     }
 };
 

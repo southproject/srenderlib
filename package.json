@@ -1,7 +1,7 @@
 {
   "name": "srenderlib",
-  "version": "1.6.0",
-  "description": "little changes for zrender diy",
+  "version": "1.7.0",
+  "description": "little changes from zrender for diy",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

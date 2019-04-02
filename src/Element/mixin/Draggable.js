@@ -24,9 +24,10 @@ Draggable.prototype = {
     _dragStart: function (e) {
         
         var draggingTarget = e.target;
+        
     //    console.log("drag"+e.target)
       //  if (draggingTarget && draggingTarget.draggable) {
-        if (draggingTarget) {
+        if (draggingTarget&&this._globalDrag) {
           //  draggingTarget.attr({style:{stroke:'#bbb'}})
             this._draggingTarget = draggingTarget;
             draggingTarget.dragging = true;
@@ -34,23 +35,33 @@ Draggable.prototype = {
             this._preX = this._x = e.offsetX;
             this._preY = this._y = e.offsetY;
             /**** */
-            if(!draggingTarget._occupied&&draggingTarget.type !== "text"){
+             
+            if(!draggingTarget._occupied&&draggingTarget.__zr.mode){
                 draggingTarget._occupied = true;
                 var username = draggingTarget.__zr.objectList.user;
                 var rect = draggingTarget.getVisionBoundingRect&&draggingTarget.getVisionBoundingRect();
-               /*  draggingTarget.__zr.objectList.attr( draggingTarget,"style",true,{  text:username,
+                if(draggingTarget.type !== "text"){
+                    
+                   /*  draggingTarget.__zr.objectList.attr( draggingTarget,"style",true,{  text:username,
+                        textPosition:[rect.width||100,0],
+                        textFill: '#0ff',
+                        fontSize: 30,
+                        fontFamily: 'Lato',
+                        fontWeight: 'bolder',}) */
+                     draggingTarget.attr("style",{text:username,
                     textPosition:[rect.width||100,0],
                     textFill: '#0ff',
                     fontSize: 30,
                     fontFamily: 'Lato',
-                    fontWeight: 'bolder',}) */
-                 draggingTarget.attr("style",{  text:username,
-                textPosition:[rect.width||100,0],
-                textFill: '#0ff',
-                fontSize: 30,
-                fontFamily: 'Lato',
-                fontWeight: 'bolder',},true)   
+                    fontWeight: 'bolder',},true)   
+                }
+                else{
+                     draggingTarget.attr("style",{textOfText:username,textPosition:[rect.width||100,0],fFontSize: 30,
+                   },true)   
+                }
+                
             }//这个操作不入栈
+            
             /** */
             this.dispatchToElement(param(draggingTarget, e), 'dragstart', e.event);//为元素拖动过程中定义拖拽事件提供触发点
         }
@@ -96,12 +107,19 @@ Draggable.prototype = {
             draggingTarget.__zr.objectList.stack.add(new Action("transform",draggingTarget,draggingTarget._preTransform))
             draggingTarget.saveTransform = true; //mouseup意味能够记录新的坐标
             draggingTarget.dragging = false;
-            if(draggingTarget.type !== 'text'){
+            
+            if(draggingTarget.__zr.mode){
                 draggingTarget._occupied = false;
                 var username = draggingTarget.__zr.objectList.user;
-                draggingTarget.attr("style",{text:"free", textFill: 'transparent',fontSize:1,},true)
-           //   draggingTarget.__zr.objectList.attr( draggingTarget,"style",true,{text:null})
+                if(draggingTarget.type !== 'text'){
+                    draggingTarget.attr("style",{text:"", textFill: 'transparent',fontSize:1,},true);
+               //   draggingTarget.__zr.objectList.attr( draggingTarget,"style",true,{text:null})
+                }
+                else{
+                    draggingTarget.attr("style",{textOfText:""},true);
+                }
             }
+           
         }
 
         this.dispatchToElement(param(draggingTarget, e), 'dragend', e.event);

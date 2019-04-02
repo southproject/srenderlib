@@ -76,6 +76,8 @@ var Handler = function(storage, painter, proxy, painterRoot) {
     this._select = null;
 
     this._preSelect = null;
+
+    this._globalDrag = true;//Promise all element draggable
     /**
      * @private
      * @type {Date}

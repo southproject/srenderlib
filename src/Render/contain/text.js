@@ -680,3 +680,16 @@ export function makeFont(style) {
     ].join(' ');
     return font && trim(font) || style.textFont || style.font;
 }
+
+export function makeFfont(style) { //in case of text of text 
+    // FIXME in node-canvas fontWeight is before fontStyle
+    // Use `fontSize` `fontFamily` to check whether font properties are defined.
+    var fFont = (style.fFontSize || style.fontFamily) && [
+        style.fFontStyle,
+        style.fFontWeight,
+        (style.fFontSize || 12) + 'px',
+        // If font properties are defined, `fontFamily` should not be ignored.
+        style.fFontFamily || 'sans-serif'
+    ].join(' ');
+    return fFont && trim(fFont) || style.textfFont || style.fFont;
+}
