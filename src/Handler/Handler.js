@@ -3,6 +3,7 @@ import * as vec2 from '../util/core/vector';
 import Draggable from '../Element/mixin/Draggable';
 import Click from '../Element/mixin/Click';
 import IText from '../Element/mixin/IText';
+import BlockClear from '../Element/mixin/BlockClear';
 import Eventful from '../Element/mixin/Eventful';
 import * as eventTool from '../util/core/event';
 
@@ -102,6 +103,8 @@ var Handler = function(storage, painter, proxy, painterRoot) {
     Click.call(this);
 
     IText.call(this);
+
+    BlockClear.call(this);
 
     this.setHandlerProxy(proxy);
 };
@@ -368,5 +371,6 @@ util.mixin(Handler, Eventful);
 util.mixin(Handler, Draggable);
 util.mixin(Handler, Click);
 util.mixin(Handler, IText);
+util.mixin(Handler, BlockClear);
 
 export default Handler;

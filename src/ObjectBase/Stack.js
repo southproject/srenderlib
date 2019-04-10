@@ -29,7 +29,7 @@ Stack.prototype = {
             case 'del':
 
               
-               this.storage.addRoot(action.object)
+               this.storage.addRoot(action.object) //如果使用id,需要一个数组存储被删除的对象
                break;
             
             case 'transform':

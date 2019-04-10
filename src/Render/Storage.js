@@ -33,6 +33,7 @@ var Storage = function () { // jshint ignore:line
 
     this._displayListLen = 0;
 
+    this._delList = [];//被暂时删除的元素存储于此
    // this._objectList = objectList;
 };
 
@@ -49,7 +50,14 @@ Storage.prototype = {
             this._roots[i].traverse(cb, context);
         }
     },
-
+    getElById:function(id){
+        for (var i = 0; i < this._roots.length; i++) {
+            if(this._roots[i].id===id){
+                return this._roots[i];
+            }
+        }
+        return null;
+    },
     /**
      * 返回所有图形的绘制队列
      * @param {boolean} [update=false] 是否在返回前更新该数组

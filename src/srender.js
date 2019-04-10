@@ -43,9 +43,9 @@ export var version = '1.0.1';
  * @param {number|string} [opts.height] Can be 'auto' (the same as null/undefined)
  * @return {module:srender/SRender}
  */
-export function init(dom, opts, collaMode,user) {
+export function init(dom, opts, collaMode,user,page) {//page是为多个sr实例服务
     var mode =  collaMode || false;
-    var sr = new SRender(guid(), dom, opts, mode,user);
+    var sr = new SRender(guid(), dom, opts, mode,user,page);
     instances[sr.id] = sr;
     return sr;
 }
@@ -148,7 +148,7 @@ export {parseSVG};
  * @param {number} [opts.width] Can be 'auto' (the same as null/undefined)
  * @param {number} [opts.height] Can be 'auto' (the same as null/undefined)
  */
-var SRender = function (id, dom, opts, mode, user) {
+var SRender = function (id, dom, opts, mode, user, page) {
 
     opts = opts || {};
 
@@ -171,6 +171,8 @@ var SRender = function (id, dom, opts, mode, user) {
      * @type {string}
      */
     this.id = id;
+
+    this.page = page||-1;
 
     this.mode = mode;
 
@@ -268,7 +270,8 @@ SRender.prototype = {
      */
 
     initWithCb: function(cb) {
-        this.pipeCb = cb
+        if(this.page === -1) this.pipeCb = cb;
+        else this.pipeCb = cb.bind(this,this.page);
     },
     /**
      * 添加元素
