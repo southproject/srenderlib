@@ -224,7 +224,7 @@ Painter.prototype = {
     getType: function () {
         return 'canvas';
     },
-
+  //  replaceCanvas
     /**
      * If painter use a single canvas
      * @return {boolean}

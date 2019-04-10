@@ -228,7 +228,7 @@ ObjectList.prototype={
             guid('recover')
             if(array){
                 if(array instanceof Array){
-                    array.forEach(function(el){this.add(el)},this);
+                    array.forEach(function(el){this.add(el,false)},this);
                 }
                 else this.add(array);
             }
