@@ -196,7 +196,7 @@ ObjectList.prototype={
                         util.extend(_preStyle,util.extend1(obj.style,style))
                         let action = new Action("style",obj,_preStyle)
                         this.stack.add(action)
-                        obj.attr('style',style,true);//
+                        obj.attr('style',style,mode);//
                     }
                     
                     break;
