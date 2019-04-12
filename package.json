@@ -1,6 +1,6 @@
 {
   "name": "srenderlib",
-  "version": "1.7.7",
+  "version": "1.7.8",
   "description": "little changes from zrender for diy",
   "main": "index.js",
   "scripts": {

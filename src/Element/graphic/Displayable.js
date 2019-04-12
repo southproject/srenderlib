@@ -254,7 +254,10 @@ Displayable.prototype = {
         }
         else {
             this.style.set(value);//if style change was text,using another tag to avoid stack
-            mode && isUserText?this.pipe({type:"attr",tag:"style-text",el:{id:this.id,style:value}}):this.pipe({type:"attr",tag:"style",el:{id:this.id,style:value}});
+            if(mode){
+                isUserText?this.pipe({type:"attr",tag:"style-text",el:{id:this.id,style:value}}):this.pipe({type:"attr",tag:"style",el:{id:this.id,style:value}});
+            }
+           // mode && isUserText?this.pipe({type:"attr",tag:"style-text",el:{id:this.id,style:value}}):this.pipe({type:"attr",tag:"style",el:{id:this.id,style:value}});
         }
     },
 
