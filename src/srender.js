@@ -117,6 +117,8 @@ export {default as DbCircle} from './Element/graphic/shape/DbCircle';
 export {default as House} from './Element/graphic/shape/House';
 export {default as Trochoid} from './Element/graphic/shape/Trochoid';
 
+export {default as Action} from './Element/Action';
+
 export {default as LinearGradient} from './Element/graphic/LinearGradient';
 export {default as RadialGradient} from './Element/graphic/RadialGradient';
 export {default as Pattern} from './Element/graphic/Pattern';
@@ -232,8 +234,8 @@ var SRender = function (id, dom, opts, mode, user, page) {
     storage.delFromStorage = function (el) {
         oldDelFromStorage.call(storage, el);
 
-        el && el.removeSelfFromZr(self);
-    };
+    //    el && el.removeSelfFromZr(self); //解绑该元素的__zr是必要的，避免通过__zr检索到被删除的元素，但是有时需要一个被删除元素的__zr
+    };//为了安全也可以把删除元素的旧__zr放在另外的变量上，比如_zr
 
     storage.addToStorage = function (el) {
 
@@ -320,6 +322,10 @@ SRender.prototype = {
     },
     changeLineWidth: function(el,width){
         this.objectList.attr(el,"style",this.mode,{lineWidth:width})
+    },
+
+    stack: function(type,id,msg){ //add stack from collaborator
+        this.objectList.stack(type,id,msg)
     },
     /**
      * 撤销功能

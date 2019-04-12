@@ -196,7 +196,7 @@ ObjectList.prototype={
                         util.extend(_preStyle,util.extend1(obj.style,style))
                         let action = new Action("style",obj,_preStyle)
                         this.stack.add(action)
-                        obj.attr('style',style);//
+                        obj.attr('style',style,true);//
                     }
                     
                     break;
@@ -221,8 +221,13 @@ ObjectList.prototype={
         */
     },
 
-    init: function(array,override = true) {
-        if(override){
+    stack: function(type,id,msg){
+       const el = this.storage.getElById(id);
+        el && this.stack.add( new Action(type,el,msg))
+    },
+
+    init: function(array,overRide = true) {
+        if(overRide){
             this.del()
           //  this.add(array)
             guid('recover')

@@ -344,7 +344,7 @@ Path.prototype = {
     },
 
     // Overwrite attrKV
-    attrKV: function (key, value, mode) {
+    attrKV: function (key, value, mode,stack=true) {
         // FIXME
         if (key === 'shape') {
             this.setShape(value,mode);
@@ -352,7 +352,7 @@ Path.prototype = {
             this._rect = null;
         }
         else {
-            Displayable.prototype.attrKV.call(this, key, value, mode);
+            Displayable.prototype.attrKV.call(this, key, value, mode,stack);
         }
     },
 

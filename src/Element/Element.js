@@ -143,16 +143,23 @@ Element.prototype = {
     /**
      * @protected
      */
-    attrKV: function (key, value, mode) {
+    attrKV: function (key, value, mode=false,stack=true) {
         if (key === 'position' || key === 'scale' || key === 'origin'||key === 'rotation') {//
             // Copy the array
             if (value) {
                 var target = this[key];
+               if(stack){
+                    this._preTransform = [...this.transform];
+                //   this._stackDelay = true;//position的设定最是转换到transform上的，到那时可入栈
+                   this.__zr.objectList.stack.add(new Action("transform",this,this._preTransform))
+              
+               }
                 if (!target) {
                     target = this[key] = [];
                 }
                 target[0] = value[0];
                 target[1] = value[1];
+                
             }
         }
         else {
@@ -180,16 +187,16 @@ Element.prototype = {
      * @param {string|Object} key
      * @param {*} value
      */
-    attr: function (key, value, isObserver) {
+    attr: function (key, value, isObserver,stack=true) {
         var mode = isObserver || false        //默认是发送者
         if (typeof key === 'string') {
-            this.attrKV(key, value ,mode);
+            this.attrKV(key, value ,mode,stack);
         }
         else if (zrUtil.isObject(key)) {
             for (var name in key) {
                 if (key.hasOwnProperty(name)) {
                    
-                    this.attrKV(name, key[name],mode);
+                    this.attrKV(name, key[name],mode,stack);
                 }
             }
         }
@@ -239,7 +246,7 @@ Element.prototype = {
     /**
      * Add self from zrender instance.
      * Not recursively because it will be invoked when element added to storage.
-     * @param {module:zrender/ZRender} zr
+     * @param {module:zrender/ZRender} zr//sr
      */
     addSelfToZr: function (zr) {
 
