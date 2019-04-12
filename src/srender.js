@@ -324,21 +324,21 @@ SRender.prototype = {
         this.objectList.attr(el,"style",this.mode,{lineWidth:width})
     },
 
-    stack: function(type,id,msg){ //add stack from collaborator
-        this.objectList.stack(type,id,msg)
+    stacking: function(type,id,msg){ //add stack from collaborator//caution not override var
+        this.objectList.stacking(type,id,msg)
     },
     /**
      * 撤销功能
      */
-    undo: function(){
-        this.stack.undo();
+    undo: function(triggered){
+        this.stack.undo(triggered);
     //    this._needsRefresh = true;
     },
     /**
      * 回溯
      */
-    redo: function(){
-        this.stack.redo();
+    redo: function(triggered){
+        this.stack.redo(triggered);
     //    this._needsRefresh = true;
     },
 

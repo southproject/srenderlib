@@ -221,9 +221,9 @@ ObjectList.prototype={
         */
     },
 
-    stack: function(type,id,msg){
+    stacking: function(type,id,msg){
        const el = this.storage.getElById(id);
-        el && this.stack.add( new Action(type,el,msg))
+        el && this.stack.add( new Action(type,el,msg),true)
     },
 
     init: function(array,overRide = true) {

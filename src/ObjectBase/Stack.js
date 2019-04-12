@@ -119,7 +119,7 @@ Stack.prototype = {
         this._redoList = [] //意味着如果有操作，则无法向后
 
         if(action.type === "transform"){//类似transform操作都需要统一栈数据
-            action.object.pipe({type:"stack-transform",tag:[...action.act],el:action.object.id})
+            !triggered && action.object.pipe({type:"stack-transform",tag:[...action.act],el:action.object.id})
         }
 
         !triggered && action.object.pipe({type:"stack",tag:"interrupt"}) //似乎没有必要

@@ -148,12 +148,12 @@ Element.prototype = {
             // Copy the array
             if (value) {
                 var target = this[key];
-               if(stack){
+               /* if(stack){
                     this._preTransform = [...this.transform];
                 //   this._stackDelay = true;//position的设定最是转换到transform上的，到那时可入栈
                    this.__zr.objectList.stack.add(new Action("transform",this,this._preTransform))
               
-               }
+               } */
                 if (!target) {
                     target = this[key] = [];
                 }
