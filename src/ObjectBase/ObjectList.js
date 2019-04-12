@@ -189,7 +189,7 @@ ObjectList.prototype={
                     break;
                 case 'style':  
                     if(forUser) {
-                        obj.attr('style',style,false);//
+                        obj.attr('style',style,false,false,true);//指text-style
                     }
                     else{
                         var _preStyle = {}//只有style属性不含函数
