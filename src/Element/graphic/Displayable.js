@@ -248,13 +248,13 @@ Displayable.prototype = {
         return this.animate('style', loop);
     },
 
-    attrKV: function (key, value, mode=false,stack=true) {
+    attrKV: function (key, value, mode=false,stack=true,isUserText=false) {
         if (key !== 'style') {
             Element.prototype.attrKV.call(this, key, value, mode,stack);
         }
         else {
-            this.style.set(value);
-            mode&&this.pipe({type:"attr",tag:"style",el:{id:this.id,style:value}})
+            this.style.set(value);//if style change was text,using another tag to avoid stack
+            mode && isUserText?this.pipe({type:"attr",tag:"style-text",el:{id:this.id,style:value}}):this.pipe({type:"attr",tag:"style",el:{id:this.id,style:value}});
         }
     },
 
@@ -263,7 +263,7 @@ Displayable.prototype = {
      * @param {*} value
      */
     setStyle: function (key, value) {
-        this.style.set(key, value);
+        this.style.set(key, value);//或许应该把stack操作和判断放入set中
         this.dirty(false);
         return this;
     },

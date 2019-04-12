@@ -53,11 +53,11 @@ Draggable.prototype = {
                     textFill: '#0ff',
                     fontSize: 30,
                     fontFamily: 'Lato',
-                    fontWeight: 'bolder',},true)   
+                    fontWeight: 'bolder',},true,false)   //不入栈
                 }
                 else{
                      draggingTarget.attr("style",{textOfText:username,textPosition:[rect.width||100,0],fFontSize: 30,
-                   },true)   
+                   },true,false)
                 }
                 
             }//这个操作不入栈
@@ -112,11 +112,11 @@ Draggable.prototype = {
                 draggingTarget._occupied = false;
                 var username = draggingTarget.__zr.objectList.user;
                 if(draggingTarget.type !== 'text'){
-                    draggingTarget.attr("style",{text:"", textFill: 'transparent',fontSize:1,},true);
+                    draggingTarget.attr("style",{text:"", textFill: 'transparent',fontSize:1,},true,false);
                //   draggingTarget.__zr.objectList.attr( draggingTarget,"style",true,{text:null})
                 }
                 else{
-                    draggingTarget.attr("style",{textOfText:""},true);
+                    draggingTarget.attr("style",{textOfText:""},true,false);
                 }
             }
            

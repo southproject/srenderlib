@@ -187,16 +187,16 @@ Element.prototype = {
      * @param {string|Object} key
      * @param {*} value
      */
-    attr: function (key, value, isObserver,stack=true) {
+    attr: function (key, value, isObserver,stack=true,isUserText=false) {
         var mode = isObserver || false        //默认是发送者
         if (typeof key === 'string') {
-            this.attrKV(key, value ,mode,stack);
+            this.attrKV(key, value ,mode,stack,isUserText);
         }
         else if (zrUtil.isObject(key)) {
             for (var name in key) {
                 if (key.hasOwnProperty(name)) {
                    
-                    this.attrKV(name, key[name],mode,stack);
+                    this.attrKV(name, key[name],mode,stack,isUserText);
                 }
             }
         }
