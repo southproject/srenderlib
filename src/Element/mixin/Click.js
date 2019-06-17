@@ -1,5 +1,5 @@
 import {lift} from '../../util/tool/color'
-
+import Rect from '../graphic/shape/Rect'
 function Click(){
 
     this._chooseObject = null;
@@ -12,6 +12,7 @@ Click.prototype = {
 
     constructor: Click,
 
+   
     _choose: function(e){
 
         var clickingTarget = e.target;
@@ -21,16 +22,31 @@ Click.prototype = {
         if(clickingTarget){
         //    console.log("进入流程:",clickingTarget.type)
             if(this._preSelect){
-              
+                
                 //_down(this._preSelect)
             }
-            this._select = clickingTarget
-
+            this._select = clickingTarget;
+            this.drawVisionRect(this._select);
             this._highlight(clickingTarget)
             this._preSelect = clickingTarget
             this._chooseObject = clickingTarget
 
         }
+
+    },
+    drawVisionRect: function(target){
+        var param;
+        param = target&&target.getVisionBoundingRect()
+        console.log("bounding:",param)
+        this.storage.addRoot(new Rect({shape:param, style: {
+            stroke: '#ccc',
+            fill: 'none',
+            lineDash: [5, 5, 10, 10],
+        },}))
+        
+
+    },
+    clearVisonRect: function(e){
 
     },
     _highlight(el){

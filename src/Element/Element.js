@@ -91,7 +91,9 @@ Element.prototype = {
                 dx = 0;
                 break;
         }
-
+        if(this.type === "video"){
+            this.attr("style",{x:this.showStyle.x + dx,y:this.showStyle.y + dy})
+        }
         var m = this.transform;
         if (!m) {
             m = this.transform = [1, 0, 0, 1, 0, 0];

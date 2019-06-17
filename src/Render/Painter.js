@@ -138,7 +138,7 @@ var Painter = function (root, storage, opts) {
     }
 
     /**
-     * @type {module:zrender/Storage}
+     * @type {module:srender/Storage}
      */
     this.storage = storage;
 
@@ -149,7 +149,7 @@ var Painter = function (root, storage, opts) {
     var zlevelList = this._zlevelList = [];
 
     /**
-     * @type {Object.<string, module:zrender/Layer>}
+     * @type {Object.<string, module:srender/Layer>}
      * @private
      */
     var layers = this._layers = {};

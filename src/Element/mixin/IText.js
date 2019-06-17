@@ -15,6 +15,9 @@ IText.prototype = {
     updateText: function(e,target){
         this.textTarget.attr("style",{text:this._itext.value},true);
     },
+    drawBlock: function(){
+            
+    },
     displayInput: function(e){  //display textarea to get keyboard input
 
         if(this._Itexting&&this.textTarget===e.target) return 

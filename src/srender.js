@@ -94,6 +94,7 @@ function delInstance(id) {
 export {default as Group} from './Render/container/Group';
 export {default as Path} from './Element/graphic/Path';
 export {default as Image} from './Element/graphic/Image';
+export {default as Video} from './Element/graphic/Video';
 export {default as CompoundPath} from './Element/graphic/CompoundPath';
 export {default as Text} from './Element/graphic/Text';
 export {default as IncrementalDisplayable} from './Element/graphic/IncrementalDisplayable';
@@ -285,6 +286,10 @@ SRender.prototype = {
        this._needsRefresh = true;
        
     },
+    getSelect(){
+        console.log("select",this.handler._select)
+        console.log("preSelect",this.handler._preSelect)
+    },
 
     /**
      * 删除元素
@@ -310,7 +315,7 @@ SRender.prototype = {
     },
 
     changeFillColor: function(el,color){
-
+        if(!el) return 
         this.objectList.attr(el,"style",this.mode,{fill:color})
       //  el.attr("style",{fill:color})
         // this._needsRefresh = true;
@@ -318,9 +323,11 @@ SRender.prototype = {
     changeStrokeColor: function(el,color){
       //  el.attr("style",{stroke:color})
         // this._needsRefresh = true;
+        if(!el) return 
         this.objectList.attr(el,"style",this.mode,{stroke:color})
     },
     changeLineWidth: function(el,width){
+        if(!el) return
         this.objectList.attr(el,"style",this.mode,{lineWidth:width})
     },
 
