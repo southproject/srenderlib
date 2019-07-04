@@ -267,7 +267,9 @@ SRender.prototype = {
         this.objectList.init(jsonArray)
         this._needsRefresh = true;
     },
-
+    dealPropertyMenu:function(cb){
+        this.showProperty = cb.bind(this)
+    },
     /**
      * @param {Function} 向服务器发送msg的函数
      */
