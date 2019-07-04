@@ -37,7 +37,7 @@ Click.prototype = {
     drawVisionRect: function(target){
         var param;
         param = target&&target.getVisionBoundingRect()
-        target.__zr.showProperty(target.type)
+        target.__zr.showProperty&&(typeof target.__zr.showProperty === 'function')&&target.__zr.showProperty(target.type)
         console.log("bounding:",param)
         this.storage.addRoot(new Rect({shape:param, style: {
             stroke: '#ccc',
