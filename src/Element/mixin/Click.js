@@ -1,11 +1,10 @@
 import {lift} from '../../util/tool/color'
-import Rect from '../graphic/shape/Rect'
+
 function Click(){
 
     this._chooseObject = null;
 
     this.on('click',this._choose,this)
-    
 }
 
 Click.prototype = {
@@ -19,10 +18,9 @@ Click.prototype = {
 
       //  console.log("Click:"+clickingTarget.type)
 
-        if(clickingTarget){
-        //    console.log("进入流程:",clickingTarget.type)
+        if(clickingTarget&&clickingTarget.type!=='vision'&&clickingTarget.type!=='rotate'){
+            console.log("进入流程:",clickingTarget.type)
             if(this._preSelect){
-                
                 //_down(this._preSelect)
             }
             this._select = clickingTarget;
@@ -30,26 +28,20 @@ Click.prototype = {
             this._highlight(clickingTarget)
             this._preSelect = clickingTarget
             this._chooseObject = clickingTarget
-
         }
-
+        else{
+            if(this.__visionRect) this.storage.delRoot(this.__visionRect);
+            if(this.__rotateCircle) this.storage.delRoot(this.__rotateCircle);
+            if(this.__scaleCircle3){
+                //this.storage.delRoot(this.__scaleCircle1);
+                //this.storage.delRoot(this.__scaleCircle2);
+                this.storage.delRoot(this.__scaleCircle3);
+                //this.storage.delRoot(this.__scaleCircle4);
+            }
+        }
+        console.log("点击目标",e);
     },
-    drawVisionRect: function(target){
-        var param;
-        param = target&&target.getVisionBoundingRect()
-        target.__zr.showProperty&&(typeof target.__zr.showProperty === 'function')&&target.__zr.showProperty(target.type)
-        console.log("bounding:",param)
-        this.storage.addRoot(new Rect({shape:param, style: {
-            stroke: '#ccc',
-            fill: 'none',
-            lineDash: [5, 5, 10, 10],
-        },}))
-        
-
-    },
-    clearVisonRect: function(e){
-
-    },
+    
     _highlight(el){
         if(el&&el.style&&el.style.fill==="transparent"){
            let color = lift(el.style.stroke,0.9)

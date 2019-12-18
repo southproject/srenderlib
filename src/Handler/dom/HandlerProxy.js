@@ -75,6 +75,7 @@ function processGesture(proxy, event, stage) {
  * 2. Chrome for Android dispatch mousedown for long-touch about 650ms
  * Result: Blocking Mouse Events for 700ms.
  */
+
 function setTouchTimer(instance) {
     instance._touching = true;
     clearTimeout(instance._touchTimer);

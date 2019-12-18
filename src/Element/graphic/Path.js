@@ -224,13 +224,18 @@ Path.prototype = {
 
         return rect;
     },
+
     getVisionBoundingRect: function(){
-       // var rect = this._rect;
-        var $rect = this.__rect;
+        // var transform = this.getLocalTransform(this.transform);
+        // console.log('getBoundingRect......',transform);
+        // return this.getBoundingRect().applyTransform(transform)
+
+        // var rect = this._rect;
+        // var $rect = this.__rect;
         var style = this.style;
         var tmpMat = [];
-        var needsUpdateRect = !$rect;
-        if (needsUpdateRect) {
+        // var needsUpdateRect = !$rect;
+        // if (needsUpdateRect) {
             var path = this.path;
             if (!path) {
                 // Create path on demand.
@@ -240,16 +245,16 @@ Path.prototype = {
                 path.beginPath();
                 this.buildPath(path, this.shape, false);
             }
-            $rect = path.getBoundingRect();
-        }
-        this.__rect = $rect;
+            var $rect = path.getBoundingRect();
+        // }
+        //this.__rect = $rect;
         var transform = this.getLocalTransform(tmpMat);
         if (style.hasStroke()) {
             // Needs update rect with stroke lineWidth when
             // 1. Element changes scale or lineWidth
             // 2. Shape is changed
-            var rectWithStroke = this.__rectWithStroke || (this.__rectWithStroke = $rect.clone());
-            if (this.__dirty || needsUpdateRect) {
+            var rectWithStroke = $rect;
+            // if (this.__dirty) {
                 rectWithStroke.copy($rect);
                 // FIXME Must after updateTransform
                 var w = style.lineWidth;
@@ -268,7 +273,7 @@ Path.prototype = {
                     rectWithStroke.x -= w / lineScale / 2;
                     rectWithStroke.y -= w / lineScale / 2;
                 }
-            }
+            // }
             rectWithStroke.applyTransform(transform);
             // Return rect with stroke
             return rectWithStroke;
@@ -278,7 +283,6 @@ Path.prototype = {
     },
 
     contain: function (x, y) {
-       
         var localPos = this.transformCoordToLocal(x, y);
         var rect = this.getBoundingRect();
         var style = this.style;

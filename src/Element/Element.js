@@ -118,7 +118,35 @@ Element.prototype = {
             el:{id:this.id,position:[ m[4],m[5]]}
         })  //是否要为主动和被动的位移分别设置函数
         this.decomposeTransform();
+    //this.position=[m[4],m[5]]
         this.dirty(false);
+    },
+
+    changeShape: function (dx, dy) {
+        var m = this.transform;
+        if (!m) {
+            m = this.transform = [1, 0, 0, 1, 0, 0];
+        }
+        // m[0] += dx;
+        // m[3] += dy;
+        // this.pipe({type:"attr",
+        //     tag:"position",
+        //     el:{id:this.id,position:[ m[4],m[5]]}
+        // })  //是否要为主动和被动的位移分别设置函数
+        //this.decomposeTransform();
+        let s1 = dx;
+        let s2 = dy;
+        if(s1<0.05) s1 = 0.05;
+        if(s2<0.05) s2 = 0.05;
+        this.scale=[s1,s2];
+        this.dirty(false);
+    },
+
+    changeRotation: function (angle,pa) {
+        console.log('angle',angle);
+        //let pa = this.getBoundingRect();
+        console.log((Math.PI+angle))
+        this.attr({rotation:[((Math.PI+angle)),0],origin:[pa.x+(pa.width/2),pa.y+(pa.height/2)]})
     },
 
     /**
@@ -150,12 +178,12 @@ Element.prototype = {
             // Copy the array
             if (value) {
                 var target = this[key];
-               /* if(stack){
+                /* if(stack){
                     this._preTransform = [...this.transform];
                 //   this._stackDelay = true;//position的设定最是转换到transform上的，到那时可入栈
                    this.__zr.objectList.stack.add(new Action("transform",this,this._preTransform))
-              
-               } */
+                 */
+
                 if (!target) {
                     target = this[key] = [];
                 }

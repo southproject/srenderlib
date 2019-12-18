@@ -52,7 +52,7 @@ Animatable.prototype = {
                     continue;
                 }
                 prop = prop[pathSplitted[i]];
-            }
+           }
             if (prop) {
                 target = prop;
             }

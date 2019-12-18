@@ -64,16 +64,38 @@ function isClipPathChanged(clipPaths, prevClipPaths) {
 }
 
 function doClip(clipPaths, ctx) {
+    console.log('doclip');
     for (var i = 0; i < clipPaths.length; i++) {
-        var clipPath = clipPaths[i];
-
+        var clipPath = clipPaths[i]; //[i]
+        //ctx.save();
         clipPath.setTransform(ctx);
+        ctx.save();
         ctx.beginPath();
         clipPath.buildPath(ctx, clipPath.shape);
         ctx.clip();
+        ctx.clearRect(0,0,1000,1000);
+        ctx.restore();
+
         // Transform back
         clipPath.restoreTransform(ctx);
     }
+
+    // //for (var i = 0; i < clipPaths.length; i++) {
+
+    //     var clipPath = clipPaths; //[i]
+    //     //ctx.save();
+    //     clipPath.setTransform(ctx);
+    //     //ctx.save();
+    //     ctx.beginPath();
+    //     clipPath.buildPath(ctx, clipPath.shape);
+    //     ctx.clip();
+    //     ctx.clearRect(0,0,10000,10000);
+    //     //ctx.restore();
+ 
+    //     // Transform back
+    //     clipPath.restoreTransform(ctx);
+    //     //ctx.restore();
+    // //}
 }
 
 function createRoot(width, height) {
@@ -506,9 +528,34 @@ Painter.prototype = {
             && !(el.culling && isDisplayableCulled(el, this._width, this._height))
         ) {
 
-            var clipPaths = el.__clipPaths;
+            var clipPaths = el.__clipPath;
 
             // Optimize when clipping on group with several elements
+            // if (!scope.prevElClipPaths
+            //     || isClipPathChanged(clipPaths, scope.prevElClipPaths)
+            // ) {
+            //     // If has previous clipping state, restore from it
+            //     if (scope.prevElClipPaths) {
+            //         currentLayer.ctx.restore();
+            //         scope.prevElClipPaths = null;
+
+            //         // Reset prevEl since context has been restored
+            //         scope.prevEl = null;
+            //     }
+            //     // New clipping state
+            //     if (clipPaths) {
+            //         ctx.save();
+            //         doClip(clipPaths, ctx);
+            //         ctx.restore();
+            //         scope.prevElClipPaths = clipPaths;
+            //     }
+            // }
+
+            el.beforeBrush && el.beforeBrush(ctx);
+
+            el.brush(ctx, scope.prevEl || null);
+
+            //Optimize when clipping on group with several elements
             if (!scope.prevElClipPaths
                 || isClipPathChanged(clipPaths, scope.prevElClipPaths)
             ) {
@@ -522,14 +569,26 @@ Painter.prototype = {
                 }
                 // New clipping state
                 if (clipPaths) {
-                    ctx.save();
                     doClip(clipPaths, ctx);
                     scope.prevElClipPaths = clipPaths;
                 }
             }
-            el.beforeBrush && el.beforeBrush(ctx);
 
-            el.brush(ctx, scope.prevEl || null);
+            // if(el.clipPath){
+            //     var clipPath = el.clipPath; //[i]
+            //     //ctx.save();
+            //     clipPath.setTransform(ctx);
+            //     ctx.save();
+            //     ctx.beginPath();
+            //     clipPath.buildPath(ctx, clipPath.shape);
+            //     ctx.clip();
+            //     ctx.clearRect(0,0,1000,1000);
+            //     ctx.restore();
+        
+            //     // Transform back
+            //     clipPath.restoreTransform(ctx);
+            // }
+
             scope.prevEl = el;
 
             el.afterBrush && el.afterBrush(ctx);

@@ -1,6 +1,6 @@
 function BlockClear(){ //Interactive Text
     
-    this.on('dblclick',this.clear,this)
+  //  this.on('dblclick',this.clear,this)
     
 }
 

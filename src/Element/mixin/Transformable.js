@@ -83,7 +83,6 @@ transformableProto.updateTransform = function () {
     }
 
     m = m || matrix.create();
-
     if (needLocalTransform) {
         this.getLocalTransform(m);
     }
@@ -131,7 +130,6 @@ transformableProto.getLocalTransform = function (m) {
  */
 transformableProto.setTransform = function (ctx) {
     var m = this.transform;
-  //  console.log(m)
     var dpr = ctx.dpr || 1;
     if (m) {
         ctx.setTransform(dpr * m[0], dpr * m[1], dpr * m[2], dpr * m[3], dpr * m[4], dpr * m[5]);
@@ -175,7 +173,7 @@ transformableProto.setLocalTransform = function (m) {
     position[1] = m[5];
     scale[0] = sx;
     scale[1] = sy;
-    this.rotation[0] = Math.atan2(-m[1] / sy, m[0] / sx); //
+    this.rotation[0] = Math.atan2(-m[1] / sy, m[0] / sx);
     this.rotation[1] = Math.atan2(-m[1] / sy, m[0] / sx);
 };
 /**
@@ -201,7 +199,6 @@ transformableProto.decomposeTransform = function () {
         tmpTransform[5] -= origin[1];
         m = tmpTransform;
     }
-
     this.setLocalTransform(m);
 };
 
@@ -270,7 +267,6 @@ transformableProto.transformCoordToGlobal = function (x, y) {
 Transformable.getLocalTransform = function (target, m) {
     m = m || [];
     mIdentity(m);
-
     var origin = target.origin;
     var scale = target.scale || [1, 1];
     var rotation = target.rotation[0] || 0; //
